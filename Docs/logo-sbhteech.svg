@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="100" cy="100" r="100" fill="#2D0A4B"/>
+<rect x="40" y="70" width="120" height="60" rx="15" fill="#7C3AED" stroke="#fff" stroke-width="4"/>
+<text x="100" y="110" text-anchor="middle" fill="#fff" font-size="32" font-family="Segoe UI, Arial, sans-serif" font-weight="bold">SBH</text>
+<text x="100" y="135" text-anchor="middle" fill="#fff" font-size="18" font-family="Segoe UI, Arial, sans-serif" font-weight="bold">TEECH</text>
+<g stroke="#fff" stroke-width="3">
+  <circle cx="100" cy="40" r="8" fill="#7C3AED"/>
+  <circle cx="100" cy="160" r="8" fill="#10b981"/>
+  <circle cx="40" cy="100" r="8" fill="#10b981"/>
+  <circle cx="160" cy="100" r="8" fill="#7C3AED"/>
+</g>
+<g stroke="#fff" stroke-width="2">
+  <line x1="100" y1="48" x2="100" y2="70"/>
+  <line x1="100" y1="130" x2="100" y2="152"/>
+  <line x1="48" y1="100" x2="70" y2="100"/>
+  <line x1="130" y1="100" x2="152" y2="100"/>
+</g>
+</svg>
