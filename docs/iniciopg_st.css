@@ -1,0 +1,151 @@
+body {
+    background: #190d40 url('banner-sbhteech.png') no-repeat top center/cover;
+    color: #e3d7ec;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(25, 13, 64, 0.95);
+    padding: 24px 0 0 0;
+    box-shadow: 0 2px 8px rgba(25,13,64,0.15);
+}
+
+header nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.2s;
+    letter-spacing: 1px;
+}
+
+header nav ul li a:hover {
+    color: #b768ec;
+}
+
+main {
+    max-width: 900px;
+    margin: 60px auto 0 auto;
+    padding: 0 16px;
+}
+
+#banner {
+    background: rgba(25, 13, 64, 0.95);
+    border-left: none;
+    text-align: center;
+    margin-bottom: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(25,13,64,0.25);
+    padding: 32px 0 24px 0;
+}
+
+#banner h1 {
+    color: #b768ec;
+    margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+#banner p {
+    color: #e3d7ec;
+    font-size: 1.2em;
+    margin: 8px 0 0 0;
+}
+
+section {
+    background: rgba(227, 215, 236, 0.98);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(25,13,64,0.10);
+    padding: 32px 24px;
+    margin-bottom: 32px;
+    border-left: 8px solid #7447bd;
+    color: #190d40;
+}
+
+h2 {
+    color: #64488d;
+    margin-top: 0;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 8px;
+    font-size: 1.08em;
+}
+
+a {
+    color: #7447bd;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #b768ec;
+}
+
+footer {
+    background: #190d40;
+    color: #fff;
+    text-align: center;
+    padding: 16px 0;
+    margin-top: 40px;
+    font-size: 0.95em;
+    letter-spacing: 1px;
+    box-shadow: 0 -2px 8px rgba(25,13,64,0.10);
+}
+
+/* Formulário de contato */
+#fale-conosco form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin-top: 16px;
+}
+
+#fale-conosco input,
+#fale-conosco textarea {
+    border: 1px solid #b768ec;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1em;
+    background: #fff;
+    color: #190d40;
+    transition: border 0.2s;
+}
+
+#fale-conosco input:focus,
+#fale-conosco textarea:focus {
+    border: 1.5px solid #7447bd;
+    outline: none;
+}
+
+#fale-conosco button {
+    background: #7447bd;
+    color: #fff;
+    border: none;
+    padding: 10px 0;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
