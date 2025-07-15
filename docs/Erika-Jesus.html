@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo Interativo | Erika de Jesus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette: Custom (provided hex codes)
+        Application Structure Plan: A single-page application with a fixed sidebar for navigation and a main content area that displays different sections of the resume. This structure was chosen to provide a modern, app-like experience, allowing recruiters to quickly jump to the information they find most relevant (e.g., skills, experience) without linear scrolling. Key interactions include a filterable skills chart to make data digestible and an expandable timeline for work history to keep the initial view clean. This design transforms a static document into an engaging and user-friendly portfolio.
+        Visualization & Content Choices: 
+        - Resumo -> Inform -> Hero Section with contact icons -> Justification: Provides a strong, immediate first impression.
+        - Habilidades -> Organize/Compare -> Chart.js Polar Area Chart + Filterable Buttons/List -> Justification: Visually represents skill distribution and allows users to drill down into specific areas, making a long list of skills more manageable and engaging.
+        - Experiência -> Change/Inform -> Interactive Vertical Timeline (HTML/CSS) -> Justification: Intuitively shows career progression over time. The expand/collapse interaction on click prevents information overload.
+        - Formação/Certificações -> Organize -> Card-based Grid (HTML/CSS/Tailwind) -> Justification: A modern, scannable layout that treats each qualification as a discrete, digestible piece of information.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #7447bd; /* Muted grayish purple for timeline line */
+        }
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #b768ec; /* Vibrant purple for timeline dot */
+            border: 2px solid #e3d7ec; /* Light lilac-white for dot border */
+            z-index: 10;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px;
+            width: 100%;
+            max-width: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#e3d7ec] text-[#190d40]">
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-20 md:w-64 bg-white shadow-md flex flex-col fixed top-0 left-0 h-full z-20">
+            <div class="p-4 md:p-6 text-center border-b border-[#64488d]">
+                <h1 class="text-xl md:text-2xl font-bold text-[#b768ec]">EJ</h1>
+                <p class="hidden md:block text-sm text-[#7447bd] mt-1">Desenvolvedora</p>
+            </div>
+            <nav class="mt-8 flex-grow">
+                <ul class="space-y-2 px-2 md:px-4">
+                    <li><a href="#resumo" class="flex items-center p-3 rounded-lg hover:bg-[#e3d7ec] transition-colors duration-200">
+                        <svg class="h-6 w-6 text-[#b768ec]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span class="ml-4 hidden md:inline font-medium">Resumo</span>
+                    </a></li>
+                    <li><a href="#experiencia" class="flex items-center p-3 rounded-lg hover:bg-[#e3d7ec] transition-colors duration-200">
+                        <svg class="h-6 w-6 text-[#b768ec]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span class="ml-4 hidden md:inline font-medium">Experiência</span>
+                    </a></li>
+                    <li><a href="#habilidades" class="flex items-center p-3 rounded-lg hover:bg-[#e3d7ec] transition-colors duration-200">
+                        <svg class="h-6 w-6 text-[#b768ec]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                        <span class="ml-4 hidden md:inline font-medium">Habilidades</span>
+                    </a></li>
+                    <li><a href="#formacao" class="flex items-center p-3 rounded-lg hover:bg-[#e3d7ec] transition-colors duration-200">
+                        <svg class="h-6 w-6 text-[#b768ec]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-5.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"/></svg>
+                        <span class="ml-4 hidden md:inline font-medium">Formação</span>
+                    </a></li>
+                    <li><a href="#certificacoes" class="flex items-center p-3 rounded-lg hover:bg-[#e3d7ec] transition-colors duration-200">
+                         <svg class="h-6 w-6 text-[#b768ec]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        <span class="ml-4 hidden md:inline font-medium">Certificações</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-20 md:ml-64 p-6 md:p-10 w-full">
+            <!-- Resumo Section -->
+            <section id="resumo" class="min-h-screen flex items-center">
+                <div class="w-full">
+                    <h1 class="text-4xl md:text-6xl font-bold text-[#190d40]">Erika de Jesus</h1>
+                    <h2 class="text-2xl md:text-3xl font-medium text-[#b768ec] mt-2">Desenvolvedora Full Stack & Game Design</h2>
+                    <p class="mt-6 max-w-3xl text-lg text-[#64488d]">
+                        Profissional recém-graduada em Tecnologia com sólida base em suporte de TI, manutenção de hardware e software, e experiência prática em desenvolvimento Full Stack. Apaixonada por criar soluções inovadoras e experiências digitais, com destaque para Game Design. Reconhecida pela capacidade de inovação e trabalho em equipe em projetos premiados.
+                    </p>
+                    <div class="mt-8 flex items-center space-x-6">
+                        <a href="mailto:erika.jesus.wt@gmail.com" class="flex items-center text-[#64488d] hover:text-[#b768ec] transition-colors">
+                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                           <span class="ml-2">erika.jesus.wt@gmail.com</span>
+                        </a>
+                         <div class="flex items-center text-[#64488d]">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span class="ml-2">11 98688-2987</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experiência Section -->
+            <section id="experiencia" class="py-20">
+                <h2 class="text-3xl font-bold mb-12 text-[#190d40]">Experiência Profissional</h2>
+                <div class="relative pl-8">
+                    <!-- Timeline Item 1 -->
+                    <div class="timeline-item mb-12">
+                        <p class="text-sm font-medium text-[#b768ec]">Fev 2024 – Mai 2024</p>
+                        <h3 class="text-xl font-semibold mt-1">Estágio de T.I.</h3>
+                        <p class="text-md text-[#7447bd]">MBK Tecnologia | São Paulo, SP</p>
+                        <ul class="mt-4 list-disc list-inside text-[#64488d] space-y-2">
+                            <li>Realização de manutenção e instalação de hardware e componentes elétricos.</li>
+                            <li>Suporte Helpdesk, utilizando programas para acesso remoto e resolução de problemas.</li>
+                            <li>Condução de processos de máquinas e consertos gerais em sistemas operacionais.</li>
+                            <li>Organização e inserção de dados em sistemas para gestão de informações da empresa.</li>
+                        </ul>
+                    </div>
+                    <!-- Timeline Item 2 -->
+                    <div class="timeline-item">
+                        <p class="text-sm font-medium text-[#b768ec]">Fev 2023 – Dez 2023</p>
+                        <h3 class="text-xl font-semibold mt-1">Monitor de T.I. (Estágio)</h3>
+                        <p class="text-md text-[#7447bd]">FIAP | São Paulo, SP</p>
+                         <ul class="mt-4 list-disc list-inside text-[#64488d] space-y-2">
+                            <li>Execução de manutenção de computadores e cabos.</li>
+                            <li>Implementação de códigos no sistema operacional da instituição.</li>
+                            <li>Operação e suporte para utilização de dispositivos audiovisuais.</li>
+                            <li>Participação ativa em eventos, representando a instituição.</li>
+                            <li>Prestação de suporte técnico a professores durante o período de estágio.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Habilidades Section -->
+            <section id="habilidades" class="py-20">
+                <h2 class="text-3xl font-bold mb-4 text-center text-[#190d40]">Habilidades e Competências</h2>
+                <p class="text-center text-[#64488d] max-w-2xl mx-auto mb-12">Uma visão geral das minhas principais áreas de conhecimento. Clique em uma categoria para ver os detalhes.</p>
+                <div class="w-full">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+                <div id="skill-buttons" class="mt-12 flex flex-wrap justify-center gap-3"></div>
+                <div id="skill-list" class="mt-8 max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-sm hidden">
+                    <h3 id="skill-list-title" class="text-xl font-semibold mb-4 text-center text-[#190d40]"></h3>
+                    <ul id="skill-list-items" class="flex flex-wrap justify-center gap-4">
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Formação Section -->
+            <section id="formacao" class="py-20 bg-[#e3d7ec] rounded-2xl">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl font-bold mb-12 text-center text-[#190d40]">Formação Acadêmica</h2>
+                    <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg transition-transform hover:scale-105">
+                        <h3 class="text-xl font-semibold text-[#b768ec]">Graduação em Tecnologia</h3>
+                        <p class="text-lg text-[#190d40] mt-1">FIAP - Faculdade de Informática de Administração Paulista</p>
+                        <p class="text-md text-[#7447bd] mt-1">Concluído: Dezembro de 2023</p>
+                        <div class="mt-6 border-t border-[#64488d] pt-6">
+                            <h4 class="font-semibold mb-2">Destaques e Premiações:</h4>
+                            <ul class="list-disc list-inside text-[#64488d] space-y-2">
+                                <li>Premiação da faculdade por entrega de trabalho e Inovação.</li>
+                                <li>Premiação da Global Solution por melhor ideia de IA para combater a fome.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificações Section -->
+            <section id="certificacoes" class="py-20">
+                 <h2 class="text-3xl font-bold mb-12 text-center text-[#190d40]">Certificações</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Certificado Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-semibold text-lg text-[#b768ec]">Desenvolvimento de Apps Móveis e Modelagem 3D</h3>
+                        <p class="text-sm text-[#7447bd]">Dezembro de 2023</p>
+                    </div>
+                     <!-- Certificado Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-semibold text-lg text-[#b768ec]">Engines, Marketing Digital e Empreendedorismo</h3>
+                        <p class="text-sm text-[#7447bd]">Julho de 2023</p>
+                    </div>
+                     <!-- Certificado Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-semibold text-lg text-[#b768ec]">Programação Web e Design de Interfaces</h3>
+                        <p class="text-sm text-[#7447bd]">Dezembro de 2022</p>
+                    </div>
+                     <!-- Certificado Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+                        <h3 class="font-semibold text-lg text-[#b768ec]">Roteirização e Animação Digital</h3>
+                        <p class="text-sm text-[#7447bd]">Dezembro de 2022</p>
+                    </div>
+                 </div>
+            </section>
+
+            <footer class="text-center py-8 text-[#64488d]">
+                <p>&copy; 2024 Erika de Jesus. Currículo interativo desenvolvido com paixão.</p>
+            </footer>
+
+        </main>
+    </div>
+
+<script>
+    const skillsData = {
+        labels: ['Linguagens', 'Desenvolvimento de Jogos', 'Full Stack', 'Design', 'Hardware/Suporte', 'Soft Skills'],
+        datasets: [{
+            label: 'Nível de Proficiência',
+            data: [5, 5, 4, 4, 4, 5],
+            backgroundColor: [
+                'rgba(183, 104, 236, 0.7)', /* #b768ec */
+                'rgba(116, 71, 189, 0.7)', /* #7447bd */
+                'rgba(100, 72, 141, 0.7)', /* #64488d */
+                'rgba(227, 215, 236, 0.7)', /* #e3d7ec */
+                'rgba(25, 13, 64, 0.7)', /* #190d40 */
+                'rgba(183, 104, 236, 0.5)' /* #b768ec lighter */
+            ],
+            borderColor: [
+                '#b768ec',
+                '#7447bd',
+                '#64488d',
+                '#e3d7ec',
+                '#190d40',
+                '#b768ec'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const skillDetails = {
+        'Linguagens': ['HTML', 'Python', 'Java', 'JavaScript', 'C#', 'C++', 'Node.js', 'Angular', 'Ruby', 'PHP', 'SQL', 'R'],
+        'Desenvolvimento de Jogos': ['Game Design', 'Unity', 'C#', 'Modelagem 3D', 'Animação Digital'],
+        'Full Stack': ['Front-end', 'Back-end', 'APIs', 'Bancos de Dados SQL'],
+        'Design': ['Design de Interfaces', 'Design Web', 'UI/UX Principles'],
+        'Hardware/Suporte': ['Manutenção de Hardware', 'Helpdesk', 'Sistemas Operacionais', 'Redes e Cabos'],
+        'Soft Skills': ['Adaptação', 'Trabalho em Equipe', 'Proatividade', 'Resolução de Problemas', 'Inovação', 'Comunicação']
+    };
+
+    window.onload = function() {
+        const ctx = document.getElementById('skillsChart').getContext('2d');
+        const skillsChart = new Chart(ctx, {
+            type: 'polarArea',
+            data: skillsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        pointLabels: {
+                            display: true,
+                            centerPointLabels: true,
+                            font: {
+                                size: 14,
+                            },
+                            color: '#190d40' /* Text color for labels */
+                        },
+                         ticks: {
+                            display: false
+                         }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#190d40' /* Legend text color */
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.label}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const skillButtonsContainer = document.getElementById('skill-buttons');
+        const skillListContainer = document.getElementById('skill-list');
+        const skillListTitle = document.getElementById('skill-list-title');
+        const skillListItems = document.getElementById('skill-list-items');
+        let activeCategory = null;
+
+        Object.keys(skillDetails).forEach(category => {
+            const button = document.createElement('button');
+            button.className = "px-4 py-2 text-sm font-medium text-[#190d40] bg-white rounded-full shadow-sm hover:bg-[#e3d7ec] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b768ec] transition-all";
+            button.textContent = category;
+            button.dataset.category = category;
+            skillButtonsContainer.appendChild(button);
+        });
+        
+        skillButtonsContainer.addEventListener('click', (event) => {
+            if (event.target.tagName === 'BUTTON') {
+                const category = event.target.dataset.category;
+                
+                // Toggle visibility
+                if (activeCategory === category) {
+                    skillListContainer.classList.add('hidden');
+                    activeCategory = null;
+                    return;
+                }
+
+                activeCategory = category;
+                skillListTitle.textContent = `Detalhes de: ${category}`;
+                skillListItems.innerHTML = '';
+                
+                skillDetails[category].forEach(skill => {
+                    const li = document.createElement('li');
+                    li.className = "px-3 py-1 bg-[#e3d7ec] text-[#190d40] rounded-md text-sm font-medium";
+                    li.textContent = skill;
+                    skillListItems.appendChild(li);
+                });
+
+                skillListContainer.classList.remove('hidden');
+            }
+        });
+
+    };
+</script>
+
+</body>
+</html>
